@@ -20,6 +20,7 @@ interface SettingState {
   themeFollowCover: boolean;
   globalFont: "default" | string;
   LyricFont: "follow" | string;
+  japaneseLyricFont: "follow" | string;
   showCloseAppTip: boolean;
   closeAppMethod: "exit" | "hide";
   showTaskbarProgress: boolean;
@@ -73,6 +74,7 @@ interface SettingState {
   showSearchHistory: boolean;
   useAMLyrics: boolean;
   useAMSpring: boolean;
+  enableTTMLLyric: boolean;
   menuShowCover: boolean;
   preventSleep: boolean;
   localFilesPath: string[];
@@ -99,6 +101,7 @@ export const useSettingStore = defineStore("setting", {
     themeGlobalColor: false, // 全局着色
     globalFont: "default", // 全局字体
     LyricFont: "follow", // 歌词区域字体
+    japaneseLyricFont: "follow", // 日语歌词字体
     hideVipTag: false, // 隐藏 VIP 标签
     showSearchHistory: true, // 显示搜索历史
     menuShowCover: true, // 菜单显示封面
@@ -130,7 +133,7 @@ export const useSettingStore = defineStore("setting", {
     smtcOutputHighQualityCover: false, // 是否输出高清封面
     playSongDemo: false, // 是否播放试听歌曲
     scrobbleSong: false, // 是否打卡
-    dynamicCover: true, // 动态封面
+    dynamicCover: false, // 动态封面
     // 歌词
     lyricFontSize: 46, // 歌词大小
     lyricTranFontSize: 22, // 歌词翻译大小
@@ -138,6 +141,7 @@ export const useSettingStore = defineStore("setting", {
     lyricFontBold: true, // 歌词字体加粗
     useAMLyrics: false, // 是否使用 AM 歌词
     useAMSpring: false, // 是否使用 AM 歌词弹簧效果
+    enableTTMLLyric: true, // 启用 TTML 歌词
     showYrc: true, // 显示逐字歌词
     showYrcAnimation: true, // 显示逐字歌词动画
     showTran: true, // 显示歌词翻译
