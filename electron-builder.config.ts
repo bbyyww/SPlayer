@@ -23,6 +23,24 @@ const config: Configuration = {
   ],
   // 哪些文件将不会被压缩，而是解压到构建目录
   asarUnpack: ["public/**"],
+  // 将原生插件作为外部资源复制
+  extraResources: [
+    {
+      from: "native/external-media-integration",
+      to: "native",
+      filter: ["*.node"],
+    },
+    {
+      from: "native/taskbar-lyric",
+      to: "native",
+      filter: ["*.node"],
+    },
+    {
+      from: "native/tools",
+      to: "native",
+      filter: ["*.node"],
+    },
+  ],
   win: {
     // 可执行文件名
     executableName: "SPlayer",
@@ -43,6 +61,13 @@ const config: Configuration = {
       {
         target: "portable",
         arch: ["x64", "arm64"],
+      },
+    ],
+    // 注册协议
+    protocols: [
+      {
+        name: "Orpheus Protocol",
+        schemes: ["orpheus"],
       },
     ],
   },
@@ -77,11 +102,17 @@ const config: Configuration = {
     // 可执行文件名
     executableName: "SPlayer",
     // 应用程序的图标文件路径
-    icon: "public/icons/favicon-512x512.png",
-    // 权限继承的文件路径
-    entitlementsInherit: "build/entitlements.mac.plist",
+    icon: "public/icons/icon.icns",
     // macOS 平台全局文件名模板
     artifactName: "${productName}-${version}-${arch}.${ext}",
+    // 不签名
+    identity: null,
+    hardenedRuntime: false,
+    // 是否启用应用程序的 Notarization（苹果的安全审核）
+    notarize: false,
+    gatekeeperAssess: false,
+    darkModeSupport: true,
+    category: "public.app-category.music",
     // 扩展信息，如权限描述
     extendInfo: {
       NSCameraUsageDescription: "Application requests access to the device's camera.",
@@ -90,11 +121,14 @@ const config: Configuration = {
         "Application requests access to the user's Documents folder.",
       NSDownloadsFolderUsageDescription:
         "Application requests access to the user's Downloads folder.",
+      // 注册协议
+      CFBundleURLTypes: [
+        {
+          CFBundleURLName: "Orpheus Protocol",
+          CFBundleURLSchemes: ["orpheus"],
+        },
+      ],
     },
-    // 是否启用应用程序的 Notarization（苹果的安全审核）
-    notarize: false,
-    darkModeSupport: true,
-    category: "public.app-category.music",
     target: [
       // DMG 安装版
       {
@@ -139,10 +173,10 @@ const config: Configuration = {
         arch: ["x64", "arm64"],
       },
       // Snap 包管理器（仅支持 x64 架构）
-      {
-        target: "snap",
-        arch: ["x64"],
-      },
+      // {
+      //   target: "snap",
+      //   arch: ["x64"],
+      // },
       // 压缩包格式
       {
         target: "tar.gz",
@@ -152,7 +186,14 @@ const config: Configuration = {
     // 维护者信息
     maintainer: "imsyy.top",
     // 应用程序类别
-    category: "Audio;Music",
+    category: "Audio;Music;AudioVideo;",
+    // 桌面项
+    desktop: {
+      entry: {
+        // 注册协议
+        MimeType: "x-scheme-handler/orpheus;",
+      },
+    },
   },
   // AppImage 特定配置
   appImage: {
